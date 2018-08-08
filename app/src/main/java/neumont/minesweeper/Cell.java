@@ -48,8 +48,8 @@ public class Cell {
      * @return
      * Returns true if the tile is a bomb
      */
-    public boolean Flip(){
-        if(Display == "F")
+    public boolean Flip(boolean tidalFlip){
+        if(Display == "F" && !tidalFlip)
         {
             return false;
         }
