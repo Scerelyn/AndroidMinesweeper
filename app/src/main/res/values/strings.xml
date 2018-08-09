@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Minesweeper</string>
+    <string name="score_prefix_textview">Score:</string>
+    <string name="new_game_button_text">New Game</string>
 </resources>
