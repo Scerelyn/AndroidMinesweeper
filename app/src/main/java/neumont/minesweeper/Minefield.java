@@ -58,4 +58,28 @@ public class Minefield {
             Log.i("MineLine", s);
         }
     }
+
+
+    /**
+     * Method flips the passed in cell and if cell is blank calls the tidal flip method
+     * to flip all adjacent cells
+     * @param c
+     * The cell to be flipped
+     * @return
+     * returns if a bomb was flipped
+     */
+    public boolean FlipCell(Cell c)
+    {
+        boolean bomb = c.Flip(false);
+        if(bomb) {
+            return bomb;
+        }
+        if(c.getNumBombs() == 0)
+        {
+            TidalFlip(c);
+        }
+        return false;
+
+    }
+
 }
