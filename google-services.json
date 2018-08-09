@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "1020691519297",
+    "firebase_url": "https://androidminesweeper.firebaseio.com",
+    "project_id": "androidminesweeper",
+    "storage_bucket": "androidminesweeper.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1020691519297:android:186a48ce504c886d",
+        "android_client_info": {
+          "package_name": "neumont.minesweeper"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1020691519297-dano6mh6br9u7a6qi0hki0v698fp1li9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB6zcKvOCQ-jSzFbti24FqXs6sy48mHv1k"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
