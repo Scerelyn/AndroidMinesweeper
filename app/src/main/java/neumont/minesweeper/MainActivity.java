@@ -15,7 +15,7 @@ public class MainActivity extends AppCompatActivity {
         Firebase.setAndroidContext(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        FirebaseRefExample();
+        Minefield m = new Minefield(10, 10, 10);
     }
 
     public void FirebaseRefExample(){
