@@ -15,16 +15,17 @@ public class MainActivity extends AppCompatActivity {
         Firebase.setAndroidContext(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        FirebaseRefExample();
     }
 
     public void FirebaseRefExample(){
-        Firebase myFirebaseRef = new Firebase("https://<YOUR-FIREBASE-APP>.firebaseio.com/");
+        Firebase myFirebaseRef = new Firebase("https://androidminesweeper.firebaseio.com/");
 
         //Write data to Firebase
-        myFirebaseRef.child("message").setValue("Do you have data? You'll love Firebase.");
+        myFirebaseRef.child("Cell").setValue("Real");
 
         //Read data from FireBase
-        myFirebaseRef.child("message").addValueEventListener(new ValueEventListener() {
+        myFirebaseRef.child("Cell").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 System.out.println(snapshot.getValue());
