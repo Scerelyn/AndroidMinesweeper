@@ -25,13 +25,13 @@ public class MainActivity extends AppCompatActivity {
         myFirebaseRef.child("Cell").setValue("Real");
 
         //Read data from FireBase
-        myFirebaseRef.child("Cell").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                System.out.println(snapshot.getValue());
-            }
-            @Override public void onCancelled(FirebaseError error) { }
-        });
+//        myFirebaseRef.child("Cell").addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot snapshot) {
+//                System.out.println(snapshot.getValue());
+//            }
+//            @Override public void onCancelled(FirebaseError error) { }
+//        });
         // Tutorial Link
         // https://www.firebase.com/docs/android/quickstart.html
     }
