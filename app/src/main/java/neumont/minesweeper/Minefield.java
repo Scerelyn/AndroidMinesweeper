@@ -8,17 +8,41 @@ import java.util.Random;
 public class Minefield {
     private Cell[][] minefield;
 
+    public Cell[][] GetCells()
+    {
+        return minefield;
+    }
+
+
     public Minefield(int width, int height, int numBombs){
         minefield = new Cell[width][height];
         for(int x =0; x < width; x++)
         {
             for(int y = 0; y < height; y++)
             {
-                minefield[y][x] = new Cell();
+                minefield[y][x] = new Cell(x, y);
             }
         }
 
         placeBombs(numBombs);
+        logBoard();
+    }
+
+    private void logBoard()
+    {
+        int m = minefield.length;
+        String lineNum = "";
+        lineNum += m;
+        Log.i("Num lines", lineNum);
+        char index = 'a';
+        for (Cell[] a:minefield) {
+            String s = "";
+            for (Cell c:a) {
+                s += c.getDisplay();
+            }
+            Log.i("Test all the Things", index + s);
+            index++;
+        }
     }
 
     private void placeBombs(int numbombs){
@@ -81,5 +105,23 @@ public class Minefield {
         return false;
 
     }
+
+    public void TidalFlip(Cell c)
+    {
+        if(c.getDisplay() == "")
+        {
+            c.Flip(true);
+        }
+        if(c.getDisplay() == "0") {
+            for (int y = c.y - 1; y <= c.y + 1; y++) {
+                for (int x = c.x - 1; x <= c.x + 1; x++) {
+                    if (x != c.x && y != c.y) {
+                        TidalFlip(minefield[y][x]);
+                    }
+                }
+            }
+        }
+    }
+
 
 }
