@@ -25,10 +25,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        buildButtonGrid(25,25);
-        TableLayout ty = findViewById(R.id.MinefieldTableLayout);
         Minefield m = new Minefield(10, 10, 10);
-
+        buildButtonGrid(10,10, m);
+        TableLayout ty = findViewById(R.id.MinefieldTableLayout);
     }
 
     /**
@@ -36,27 +35,30 @@ public class MainActivity extends AppCompatActivity {
      * @param rowCount The amount of rows to build
      * @param colCount The amount of columns to build
      */
-    private void buildButtonGrid(int rowCount, int colCount){
+    private void buildButtonGrid(int rowCount, int colCount, final Minefield m){
         TableLayout ty = findViewById(R.id.MinefieldTableLayout); //get the table
         for(int i = 0; i < rowCount; i++){
             TableRow tr = new TableRow(this); // new row
             tr.setBackgroundColor(getResources().getColor(R.color.cellColorNormal)); // set color
             for(int j = 0; j < colCount; j++){
                 final Button b = new Button(this); // new button
-                b.setText("a"); // set text
+                b.setText(m.GetCells()[i][j].getDisplay()); // set text
                 b.setBackgroundTintList(getResources().getColorStateList(R.color.cellColorNormal)); // set its color
+                final int row = i;
+                final int col = j;
                 b.setOnClickListener(new View.OnClickListener() { // now for an on click
                     @Override
                     public void onClick(View v) {
+                        m.FlipCell(m.GetCells()[row][col]);
+                        b.setText(m.GetCells()[row][col].getDisplay());  // change text
                         Log.i("event handler", b.getText()+"");
-                        b.setText("nice");  // change text
                         b.setBackgroundTintList(getResources().getColorStateList(R.color.cellColorClicked)); // change color
                     }
                 });
                 tr.addView(b); // add the button
                 ViewGroup.LayoutParams params = b.getLayoutParams(); // get its layout parameters
-                params.height = dpToPixel(50); // change height and width using a dp to pixel converter method
-                params.width = dpToPixel(50);
+                params.height = dpToPixel(40); // change height and width using a dp to pixel converter method
+                params.width = dpToPixel(35);
                 b.setLayoutParams(params);
                 b.requestLayout(); // update layouts
                 tr.requestLayout();
@@ -64,9 +66,13 @@ public class MainActivity extends AppCompatActivity {
             ty.addView(tr);
             ty.requestLayout();
         }
-        Log.i("a","a");
     }
 
+    /**
+     * Converts a given number in dp into its respective pixel amount
+     * @param dp The dp to use
+     * @return The pixels that the given amount of dp gives
+     */
     public int dpToPixel(int dp){
         final float scale = getResources().getDisplayMetrics().density;
         int pixels = (int) (dp * scale + 0.5f);

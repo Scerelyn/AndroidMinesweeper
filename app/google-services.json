@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "1020691519297-4eu5bjqrabnc34nld28ft05bpffj51nc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "neumont.minesweeper",
+            "certificate_hash": "7fd5b900b820f2c5a784e942249aab302b0400ea"
+          }
+        },
+        {
           "client_id": "1020691519297-dano6mh6br9u7a6qi0hki0v698fp1li9.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +37,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1020691519297-dano6mh6br9u7a6qi0hki0v698fp1li9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2
