@@ -18,30 +18,50 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity {
-
+    boolean isFlagMode = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Firebase.setAndroidContext(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Minefield m = new Minefield(10, 10, 10);
-        buildButtonGrid(10,10, m);
-        TableLayout ty = findViewById(R.id.MinefieldTableLayout);
+
+
+        Button ngButton = findViewById(R.id.NewGameButton);
+        ngButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TableLayout ty = findViewById(R.id.MinefieldTableLayout);
+                ty.removeAllViews();
+                Minefield m = new Minefield(10, 10, 10);
+                buildButtonGrid(10,10, m);
+            }
+        });
+        final Button flagButton = findViewById(R.id.FlagModeButton);
+        flagButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                flagButton.setText(isFlagMode ? "Flag Mode On" : "Flag Mode Off");
+                isFlagMode = !isFlagMode;
+            }
+        });
     }
 
     /**
      * Builds a grid of buttons with a given row and column count into the minefield TableLayout instance
      * @param rowCount The amount of rows to build
      * @param colCount The amount of columns to build
+     * @return Returns a 2D button array with all the buttons on the TableLayout instance
      */
-    private void buildButtonGrid(int rowCount, int colCount, final Minefield m){
+    private Button[][] buildButtonGrid(final int rowCount, final int colCount, final Minefield m){
         TableLayout ty = findViewById(R.id.MinefieldTableLayout); //get the table
+        final Button[][] buttonArr = new Button[rowCount][colCount];
         for(int i = 0; i < rowCount; i++){
             TableRow tr = new TableRow(this); // new row
             tr.setBackgroundColor(getResources().getColor(R.color.cellColorNormal)); // set color
             for(int j = 0; j < colCount; j++){
                 final Button b = new Button(this); // new button
+                buttonArr[i][j] = b;
                 b.setText(m.GetCells()[i][j].getDisplay()); // set text
                 b.setBackgroundTintList(getResources().getColorStateList(R.color.cellColorNormal)); // set its color
                 final int row = i;
@@ -49,10 +69,13 @@ public class MainActivity extends AppCompatActivity {
                 b.setOnClickListener(new View.OnClickListener() { // now for an on click
                     @Override
                     public void onClick(View v) {
-                        m.FlipCell(m.GetCells()[row][col]);
-                        b.setText(m.GetCells()[row][col].getDisplay());  // change text
-                        Log.i("event handler", b.getText()+"");
-                        b.setBackgroundTintList(getResources().getColorStateList(R.color.cellColorClicked)); // change color
+                        if(isFlagMode){
+                            m.GetCells()[row][col].Flag();
+                            FlipButton(b, m, row, col);
+                        }
+                        else {
+                            TidalButtonFlip(row,col, buttonArr, m);
+                        }
                     }
                 });
                 tr.addView(b); // add the button
@@ -66,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
             ty.addView(tr);
             ty.requestLayout();
         }
+        return buttonArr;
     }
 
     /**
@@ -77,6 +101,35 @@ public class MainActivity extends AppCompatActivity {
         final float scale = getResources().getDisplayMetrics().density;
         int pixels = (int) (dp * scale + 0.5f);
         return pixels;
+    }
+
+    public void TidalButtonFlip(int row, int col, Button[][] buttonArr, Minefield m){
+        Button b = buttonArr[row][col];
+        FlipButton(b, m, row, col);
+        if(m.GetCells()[row][col].getNumBombs() == 0){
+            for(int rowOffset = -1; rowOffset < 2; rowOffset++){
+                for(int colOffset = -1; colOffset < 2; colOffset++){
+                    if(row+rowOffset < m.GetCells().length
+                            && row+rowOffset >= 0
+                            && col+colOffset < m.GetCells()[0].length
+                            && col+colOffset >= 0
+                            && m.GetCells()[row+rowOffset][col+colOffset].getDisplay() == "_"
+                    ) {
+                        TidalButtonFlip(row+rowOffset, col+colOffset, buttonArr, m);
+                    }
+                }
+            }
+        }
+    }
+
+    public void FlipButton(Button b, Minefield m, int row, int col){
+        boolean gameDone = m.FlipCell(m.GetCells()[row][col]);
+        b.setText(m.GetCells()[row][col].getDisplay());  // change text
+        //Log.i("event handler", b.getText()+"");
+        b.setBackgroundTintList(getResources().getColorStateList(R.color.cellColorClicked)); // change color
+        if(gameDone){
+            //do something on win
+        }
     }
 
     public void FirebaseRefExample(){

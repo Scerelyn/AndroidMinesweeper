@@ -100,7 +100,7 @@ public class Minefield {
         }
         if(c.getNumBombs() == 0)
         {
-            //TidalFlip(c);
+            TidalFlip(c);
         }
         return false;
 
