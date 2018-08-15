@@ -108,7 +108,7 @@ public class Minefield {
 
     public void TidalFlip(Cell c)
     {
-        if(c.getDisplay() == "")
+        if(c.getDisplay() == "_")
         {
             c.Flip(true);
         }
