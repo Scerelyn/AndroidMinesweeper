@@ -7,6 +7,9 @@ import java.util.Random;
 
 public class Minefield {
     private Cell[][] minefield;
+    private int UnflippedCells = 0;
+    private int NumBombs = 0;
+    private boolean GameWon = false;
 
     public Cell[][] GetCells()
     {
@@ -15,6 +18,8 @@ public class Minefield {
 
 
     public Minefield(int width, int height, int numBombs){
+        UnflippedCells = width * height;
+        NumBombs = numBombs;
         minefield = new Cell[width][height];
         for(int x =0; x < width; x++)
         {
@@ -90,7 +95,7 @@ public class Minefield {
      * @param c
      * The cell to be flipped
      * @return
-     * returns if a bomb was flipped
+     * returns true if game has ended
      */
     public boolean FlipCell(Cell c)
     {
@@ -98,15 +103,24 @@ public class Minefield {
         if(bomb) {
             return bomb;
         }
+        else if(UnflippedCells == NumBombs)
+        {
+            GameWon = true;
+            return true;
+        }
         if(c.getNumBombs() == 0)
         {
-            //TidalFlip(c);
+            boolean end = TidalFlip(c);
+            if(end)
+            {
+                return end;
+            }
         }
         return false;
 
     }
 
-    public void TidalFlip(Cell c)
+    public boolean TidalFlip(Cell c)
     {
         if(c.getDisplay() == "_")
         {
@@ -121,6 +135,12 @@ public class Minefield {
                 }
             }
         }
+        if(UnflippedCells == NumBombs)
+        {
+            GameWon = true;
+            return true;
+        }
+        return false;
     }
 
 
