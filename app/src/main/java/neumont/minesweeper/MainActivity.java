@@ -1,42 +1,36 @@
 package neumont.minesweeper;
 
-import android.content.res.ColorStateList;
-import android.graphics.Color;
+import android.app.Dialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
-import android.widget.Toast;
 
-import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     boolean isFlagMode = false;
+    Button easyButton, mediumButton, hardButton, cancelButton;
+    Dialog newGameDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Firebase.setAndroidContext(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
+        newGameDialog = new Dialog(this);
+        newGameDialog.setContentView(R.layout.new_game_dialog);
 
         Button ngButton = findViewById(R.id.NewGameButton);
         ngButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TableLayout ty = findViewById(R.id.MinefieldTableLayout);
-                ty.removeAllViews();
-                Minefield m = new Minefield(10, 10, 10);
-                buildButtonGrid(10,10, m);
+                newGameDialog.show();
             }
         });
+
         final Button flagButton = findViewById(R.id.FlagModeButton);
         flagButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,6 +39,45 @@ public class MainActivity extends AppCompatActivity {
                 isFlagMode = !isFlagMode;
             }
         });
+
+        easyButton = newGameDialog.findViewById(R.id.EasyDifficultyButton);
+        easyButton.setOnClickListener(this);
+        mediumButton = newGameDialog.findViewById(R.id.MediumDifficultyButton);
+        mediumButton.setOnClickListener(this);
+        hardButton = newGameDialog.findViewById(R.id.HardDifficultyButton);
+        hardButton.setOnClickListener(this);
+        cancelButton = newGameDialog.findViewById(R.id.CancelButton);
+        cancelButton.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View view){
+        switch(view.getId()){
+            case R.id.EasyDifficultyButton:
+                TableLayout ty = findViewById(R.id.MinefieldTableLayout);
+                ty.removeAllViews();
+                Minefield m = new Minefield(10, 10, 12);
+                buildButtonGrid(10,10, m);
+                newGameDialog.dismiss();
+                break;
+            case R.id.MediumDifficultyButton:
+                TableLayout ty2 = findViewById(R.id.MinefieldTableLayout);
+                ty2.removeAllViews();
+                Minefield m2 = new Minefield(20, 20, 60);
+                buildButtonGrid(20,20, m2);
+                newGameDialog.dismiss();
+                break;
+            case R.id.HardDifficultyButton:
+                TableLayout ty3 = findViewById(R.id.MinefieldTableLayout);
+                ty3.removeAllViews();
+                Minefield m3 = new Minefield(30, 30, 120);
+                buildButtonGrid(30,30, m3);
+                newGameDialog.dismiss();
+                break;
+            case R.id.CancelButton:
+                newGameDialog.dismiss();
+                break;
+        }
     }
 
     /**

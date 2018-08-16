@@ -2,4 +2,9 @@
     <string name="app_name">Minesweeper</string>
     <string name="score_prefix_textview">Score:</string>
     <string name="new_game_button_text">New Game</string>
+    <string name="difficulty_title_text">Choose a difficulty</string>
+    <string name="easy_button_text">Easy</string>
+    <string name="medium_button_text">Medium</string>
+    <string name="hard_button_text">Hard</string>
+    <string name="cancel_button_text">Cancel</string>
 </resources>
