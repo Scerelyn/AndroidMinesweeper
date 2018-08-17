@@ -56,36 +56,25 @@ public class Minefield {
             Random rand  = new Random();
             int y = rand.nextInt(minefield.length);
             int x = rand.nextInt(minefield[y].length);
-            minefield[y][x].setBomb(true);
+            if(!minefield[y][x].getBomb()) {
+                minefield[y][x].setBomb(true);
 
-            for(int j = y-1; j <= y+1; j++)
-        {
-            if(j >= 0 && j < minefield.length)
-            {
-                for(int k = x-1; k <= x+1; k++)
-                {
-                    if(k >= 0 && k < minefield[j].length)
-                    {
-                        minefield[j][k].setNumBombs(minefield[j][k].getNumBombs() + 1);
+                for (int j = y - 1; j <= y + 1; j++) {
+                    if (j >= 0 && j < minefield.length) {
+                        for (int k = x - 1; k <= x + 1; k++) {
+                            if (k >= 0 && k < minefield[j].length) {
+                                minefield[j][k].setNumBombs(minefield[j][k].getNumBombs() + 1);
+                            }
+                        }
                     }
                 }
             }
-        }
-        }
-        for (Cell[] a:minefield) {
-            String s = "";
-            for (Cell c:a) {
-                if(c.getBomb())
-                {
-                    s += "B";
-                }
-                else{
-                    int num = c.getNumBombs();
-                    s += num;
-                }
+            else
+            {
+                i++;
             }
-            Log.i("MineLine", s);
         }
+
     }
 
 
