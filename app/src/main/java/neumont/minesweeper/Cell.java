@@ -2,7 +2,17 @@ package neumont.minesweeper;
 
 public class Cell {
 
-    private String Display = " ";
+    public Cell(int x, int y)
+    {
+        this.x = x;
+        this.y = y;
+    }
+
+    public int x;
+
+    public int y;
+
+    private String Display = "_";
 
     public String getDisplay()
     {
@@ -35,9 +45,9 @@ public class Cell {
 
     public void Flag() {
         if(Display == "F") {
-            Display = " ";
+            Display = "_";
         }
-        else {
+        else if(Display == "_"){
             Display = "F";
         }
     }
