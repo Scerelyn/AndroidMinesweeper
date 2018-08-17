@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import android.widget.TextView;
 
 import com.firebase.client.Firebase;
 
@@ -35,7 +36,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         flagButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                flagButton.setText(isFlagMode ? "Flag Mode On" : "Flag Mode Off");
+                TextView flagStatusTextView = findViewById(R.id.FlagModeStatusTextView);
+                if(isFlagMode){
+                    flagStatusTextView.setText(R.string.flag_mode_off_label);
+                } else {
+                    flagStatusTextView.setText(R.string.flag_mode_on_label);
+                }
                 isFlagMode = !isFlagMode;
             }
         });
@@ -103,8 +109,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void onClick(View v) {
                         if(isFlagMode){
-                            m.GetCells()[row][col].Flag();
-                            FlipButton(b, m, row, col);
+                            FlagButton(b,m,row,col);
                         }
                         else {
                             TidalButtonFlip(row,col, buttonArr, m);
@@ -158,10 +163,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void FlipButton(Button b, Minefield m, int row, int col){
         boolean gameDone = m.FlipCell(m.GetCells()[row][col]);
         b.setText(m.GetCells()[row][col].getDisplay());  // change text
+        if(m.GetCells()[row][col].getDisplay().equals("B")){
+            b.setBackgroundTintList(getResources().getColorStateList(R.color.bombColor));
+        }
+        else {
+            b.setBackgroundTintList(getResources().getColorStateList(R.color.cellColorClicked)); // change color
+        }
         //Log.i("event handler", b.getText()+"");
-        b.setBackgroundTintList(getResources().getColorStateList(R.color.cellColorClicked)); // change color
         if(gameDone){
             //do something on win
+        }
+    }
+
+    public void FlagButton(Button b, Minefield m, int row, int col){
+        m.GetCells()[row][col].Flag();
+        b.setText(m.GetCells()[row][col].getDisplay());  // change text
+        if(b.getText().toString().equals("F")){
+            b.setBackgroundTintList(getResources().getColorStateList(R.color.flagColor)); // change color
+        }
+        else if(b.getText().toString().equals("_")){
+            b.setBackgroundTintList(getResources().getColorStateList(R.color.cellColorNormal)); // change color
         }
     }
 
