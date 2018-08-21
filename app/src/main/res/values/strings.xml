@@ -7,4 +7,8 @@
     <string name="medium_button_text">Medium</string>
     <string name="hard_button_text">Hard</string>
     <string name="cancel_button_text">Cancel</string>
+    <string name="flag_mode_on_label">ON</string>
+    <string name="flag_mode_off_label">OFF</string>
+    <string name="flag_mode_fixed_label">Flag Mode: </string>
+    <string name="flag_button_text">Flag Mode</string>
 </resources>
