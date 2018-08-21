@@ -60,6 +60,22 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
         android:layout_marginEnd="23dp"
-        android:text="Flag Mode On" />
+        android:text="@string/flag_button_text" />
+
+    <TextView
+        android:id="@+id/FlagModeStatusTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/FlagModeButton"
+        android:layout_below="@+id/NewGameButton"
+        android:text="@string/flag_mode_off_label" />
+
+    <TextView
+        android:id="@+id/FlagModeFixedTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/FlagModeButton"
+        android:layout_below="@+id/NewGameButton"
+        android:text="@string/flag_mode_fixed_label" />
 
 </RelativeLayout>
