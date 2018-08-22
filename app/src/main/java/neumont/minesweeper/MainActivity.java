@@ -15,7 +15,8 @@ import com.firebase.client.Firebase;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     boolean isFlagMode = false;
     Button easyButton, mediumButton, hardButton, cancelButton;
-    Dialog newGameDialog;
+    Dialog newGameDialog, gameOverDialog;
+    Minefield minefield;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Firebase.setAndroidContext(this);
@@ -23,6 +24,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         newGameDialog = new Dialog(this);
         newGameDialog.setContentView(R.layout.new_game_dialog);
+        gameOverDialog = new Dialog(this);
+        gameOverDialog.setContentView(R.layout.game_over_dialog);
 
         Button ngButton = findViewById(R.id.NewGameButton);
         ngButton.setOnClickListener(new View.OnClickListener() {
@@ -54,6 +57,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         hardButton.setOnClickListener(this);
         cancelButton = newGameDialog.findViewById(R.id.CancelButton);
         cancelButton.setOnClickListener(this);
+
+        gameOverDialog.findViewById(R.id.GameOverYesButton).setOnClickListener(this);
     }
 
     @Override
@@ -83,6 +88,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.CancelButton:
                 newGameDialog.dismiss();
                 break;
+            case R.id.GameOverYesButton: //using fallthrough to my advantage here
+                newGameDialog.show();
+            case R.id.GameOverNoButton:
+                gameOverDialog.dismiss();
+                break;
         }
     }
 
@@ -93,6 +103,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * @return Returns a 2D button array with all the buttons on the TableLayout instance
      */
     private Button[][] buildButtonGrid(final int rowCount, final int colCount, final Minefield m){
+        this.minefield = m;
         TableLayout ty = findViewById(R.id.MinefieldTableLayout); //get the table
         final Button[][] buttonArr = new Button[rowCount][colCount];
         for(int i = 0; i < rowCount; i++){
@@ -171,7 +182,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         //Log.i("event handler", b.getText()+"");
         if(gameDone){
-            //do something on win
+            SetFieldEnabled(false);
+            if(m.GetCells()[row][col].getDisplay().equals("B")){
+                ((TextView)gameOverDialog.findViewById(R.id.GameOverHeaderTextView)).setText(R.string.game_over_lose);
+            }
+            else {
+                ((TextView)gameOverDialog.findViewById(R.id.GameOverHeaderTextView)).setText(R.string.game_over_won);
+            }
+            gameOverDialog.show();
         }
     }
 
@@ -184,6 +202,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         else if(b.getText().toString().equals("_")){
             b.setBackgroundTintList(getResources().getColorStateList(R.color.cellColorNormal)); // change color
         }
+    }
+
+    public void SetFieldEnabled(boolean enabled){
+        TableLayout tl = findViewById(R.id.MinefieldTableLayout);
+        for(int row = 0; row < minefield.GetCells().length; row++){
+            TableRow tr = (TableRow)tl.getChildAt(row);
+            for(int col = 0; col < minefield.GetCells()[0].length; col++){
+                Button b = (Button)tr.getChildAt(col);
+                b.setEnabled(enabled);
+            }
+        }
+
     }
 
     public void FirebaseRefExample(){
