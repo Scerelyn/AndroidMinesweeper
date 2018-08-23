@@ -109,6 +109,10 @@ public class Minefield {
 
     }
 
+    public boolean isGameWon() {
+        return GameWon;
+    }
+
     public boolean TidalFlip(Cell c)
     {
         if(c.getDisplay() == "_")
