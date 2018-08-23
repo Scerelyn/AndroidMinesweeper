@@ -204,4 +204,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // https://www.firebase.com/docs/android/quickstart.html
     }
 
+    private void UpdateBombCount()
+    {
+        TextView BombCounter = (TextView)findViewById(R.id.BombCountTextView);
+        //BombCounter.setText(minefield.NumBoms() - flaggedCells);
+    }
+
 }

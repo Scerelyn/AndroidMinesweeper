@@ -45,6 +45,23 @@
         android:layout_toEndOf="@+id/ScorePrefixTextView"
         android:text="00000" />
 
+    <TextView
+        android:id="@+id/BombPrefixTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="44dp"
+        android:text="Bombs Remaining:"/>
+    <TextView
+        android:id="@+id/BombCountTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/BombPrefixTextView"
+        android:layout_toEndOf="@+id/BombPrefixTextView"
+        android:text = "0"/>
+
     <Button
         android:id="@+id/NewGameButton"
         android:layout_width="wrap_content"
