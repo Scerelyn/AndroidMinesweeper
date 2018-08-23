@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         cancelButton.setOnClickListener(this);
 
         gameOverDialog.findViewById(R.id.GameOverYesButton).setOnClickListener(this);
+        gameOverDialog.findViewById(R.id.GameOverNoButton).setOnClickListener(this);
     }
 
     @Override
@@ -183,7 +184,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //Log.i("event handler", b.getText()+"");
         if(gameDone){
             SetFieldEnabled(false);
-            if(m.GetCells()[row][col].getDisplay().equals("B")){
+            if(!m.isGameWon()){
                 ((TextView)gameOverDialog.findViewById(R.id.GameOverHeaderTextView)).setText(R.string.game_over_lose);
             }
             else {
