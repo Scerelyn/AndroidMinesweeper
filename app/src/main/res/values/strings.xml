@@ -3,6 +3,7 @@
     <string name="score_prefix_textview">Score:</string>
     <string name="new_game_button_text">New Game</string>
     <string name="difficulty_title_text">Choose a difficulty</string>
+    <string name="game_over_difficulty_title_text">Game Over, play again?</string>
     <string name="easy_button_text">Easy</string>
     <string name="medium_button_text">Medium</string>
     <string name="hard_button_text">Hard</string>
@@ -11,4 +12,9 @@
     <string name="flag_mode_off_label">OFF</string>
     <string name="flag_mode_fixed_label">Flag Mode: </string>
     <string name="flag_button_text">Flag Mode</string>
+    <string name="game_over_lose">Game Over, you lost</string>
+    <string name="game_over_won">You Won!</string>
+    <string name="game_over_ask_new_game">Play a new game?</string>
+    <string name="game_over_yes_button">Yes</string>
+    <string name="game_over_no_button">No</string>
 </resources>
