@@ -21,6 +21,7 @@ public class Minefield {
         UnflippedCells = width * height;
         NumBombs = numBombs;
         minefield = new Cell[width][height];
+        UnflippedCells = width * height;
         for(int x =0; x < width; x++)
         {
             for(int y = 0; y < height; y++)
@@ -88,6 +89,10 @@ public class Minefield {
      */
     public boolean FlipCell(Cell c)
     {
+        if(c.getDisplay() == "_")
+        {
+            UnflippedCells--;
+        }
         boolean bomb = c.Flip(false);
         if(bomb) {
             return bomb;
@@ -118,6 +123,7 @@ public class Minefield {
         if(c.getDisplay() == "_")
         {
             c.Flip(true);
+            UnflippedCells--;
         }
         if(c.getDisplay() == "0") {
             for (int y = c.y - 1; y <= c.y + 1; y++) {
