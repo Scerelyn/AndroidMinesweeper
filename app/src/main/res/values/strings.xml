@@ -17,4 +17,6 @@
     <string name="game_over_ask_new_game">Play a new game?</string>
     <string name="game_over_yes_button">Yes</string>
     <string name="game_over_no_button">No</string>
+    <string name="flag_mode_switch_text">Flag Mode</string>
+    <string name="load_game_button_text">Load Game</string>
 </resources>

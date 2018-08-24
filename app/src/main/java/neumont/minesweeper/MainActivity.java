@@ -9,6 +9,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -42,17 +44,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-        final Button flagButton = findViewById(R.id.FlagModeButton);
-        flagButton.setOnClickListener(new View.OnClickListener() {
+        final Switch flagSwitch = findViewById(R.id.FlagModeSwitch);
+        flagSwitch.setOnCheckedChangeListener(new Switch.OnCheckedChangeListener() {
             @Override
-            public void onClick(View v) {
-                TextView flagStatusTextView = findViewById(R.id.FlagModeStatusTextView);
-                if(isFlagMode){
-                    flagStatusTextView.setText(R.string.flag_mode_off_label);
-                } else {
-                    flagStatusTextView.setText(R.string.flag_mode_on_label);
-                }
-                isFlagMode = !isFlagMode;
+            public void onCheckedChanged(CompoundButton cb, boolean b){
+                isFlagMode = b;
             }
         });
 
@@ -100,6 +96,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 newGameDialog.show();
             case R.id.GameOverNoButton:
                 gameOverDialog.dismiss();
+            case R.id.LoadGameButton:
+
+                //load game from DB here
+
+                newGameDialog.dismiss();
                 break;
         }
     }
@@ -162,17 +163,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void TidalButtonFlip(int row, int col, Button[][] buttonArr, Minefield m){
         Button b = buttonArr[row][col];
-        FlipButton(b, m, row, col);
-        if(m.GetCells()[row][col].getNumBombs() == 0){
-            for(int rowOffset = -1; rowOffset < 2; rowOffset++){
-                for(int colOffset = -1; colOffset < 2; colOffset++){
-                    if(row+rowOffset < m.GetCells().length
-                            && row+rowOffset >= 0
-                            && col+colOffset < m.GetCells()[0].length
-                            && col+colOffset >= 0
-                            && m.GetCells()[row+rowOffset][col+colOffset].getDisplay() == "_"
-                    ) {
-                        TidalButtonFlip(row+rowOffset, col+colOffset, buttonArr, m);
+        if(!b.getText().equals("F")){
+            FlipButton(b, m, row, col);
+            if(m.GetCells()[row][col].getNumBombs() == 0){
+                for(int rowOffset = -1; rowOffset < 2; rowOffset++){
+                    for(int colOffset = -1; colOffset < 2; colOffset++){
+                        if(row+rowOffset < m.GetCells().length
+                                && row+rowOffset >= 0
+                                && col+colOffset < m.GetCells()[0].length
+                                && col+colOffset >= 0
+                                && m.GetCells()[row+rowOffset][col+colOffset].getDisplay() == "_"
+                        ) {
+                            TidalButtonFlip(row+rowOffset, col+colOffset, buttonArr, m);
+                        }
                     }
                 }
             }
