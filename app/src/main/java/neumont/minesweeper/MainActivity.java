@@ -15,7 +15,10 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -61,8 +64,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         cancelButton = newGameDialog.findViewById(R.id.CancelButton);
         cancelButton.setOnClickListener(this);
 
+        newGameDialog.findViewById(R.id.LoadGameButton).setOnClickListener(this);
+
         gameOverDialog.findViewById(R.id.GameOverYesButton).setOnClickListener(this);
         gameOverDialog.findViewById(R.id.GameOverNoButton).setOnClickListener(this);
+
     }
 
     @Override
@@ -96,15 +102,119 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 newGameDialog.show();
             case R.id.GameOverNoButton:
                 gameOverDialog.dismiss();
+                break;
             case R.id.LoadGameButton:
+                Log.i("firebasedebug","1");
+                Firebase myFirebaseRef = new Firebase("https://androidminesweeper.firebaseio.com/");
 
-                //load game from DB here
+                myFirebaseRef.child("MineField").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        Log.i("firebasedebug","2");
+                        ArrayList<DataSnapshot> array = new ArrayList<>();
+                        for (DataSnapshot cell: dataSnapshot.getChildren()
+                             ) {
+                            array.add(cell);
+                        }
+                        int length= 0;
+                        int width = 0;
+                        switch(array.size()){
+                            case 100:
+                                Log.i("firebasedebug","3-100");
+                                length = 10;
+                                width = 10;
+                                break;
+                            case 400:
+                                Log.i("firebasedebug","3-400");
+                                length = 20;
+                                width = 20;
+                                break;
+                            case 900:
+                                Log.i("firebasedebug","3-900");
+                                length = 30;
+                                width = 30;
+                                break;
+                        }
 
+                        Minefield newMineField = new Minefield(width,length,0);
+                        Log.i("firebasedebug","4");
+                        for(int i = 0; i < length; i++){
+                            for(int j = 0;j < width;j++){
+                                Cell c = newMineField.GetCells()[i][j];
+                                if(!array.get(j+i * width).child("display").getValue().equals("_")){
+                                    c.Flip(false);
+                                }
+                                c.setBomb((boolean)array.get(j+i * width).child("bomb").getValue());
+                                c.setNumBombs((int)((long)array.get(j+i * width).child("numBombs").getValue()+0.0));
+                                c.y = i;
+                                c.x = j;
+                                newMineField.GetCells()[i][j] = c;
+                            }
+                        }
+                        Log.i("firebasedebug","5");
+                        buildButtonGrid(length, width, newMineField);
+                        Log.i("firebasedebug","6");
+                    }
+
+                    @Override
+                    public void onCancelled(FirebaseError firebaseError) {
+
+                    }
+                });
+
+
+                //Read data from FireBase
                 newGameDialog.dismiss();
                 break;
         }
     }
 
+    public void SaveGame(View view){
+        Log.i("savegame", "log1");
+        final AlertDialog.Builder Dialogue = new AlertDialog.Builder(MainActivity.this);
+        Log.i("savegame", "log2");
+
+        Dialogue.setTitle("Save Game");
+        Log.i("savegame", "log3");
+
+        Dialogue.setMessage("Save Game?");
+        Log.i("savegame", "log4");
+
+        Dialogue.setPositiveButton("yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Log.i("savegame", "log5");
+
+                Firebase ref = new Firebase("https://androidminesweeper.firebaseio.com/");
+                Log.i("savegame", "log6");
+
+                Cell[][] MineFieldToStore = minefield.GetCells();
+                Log.i("savegame", "log7");
+
+                List<Cell> list = new ArrayList<>();
+                Log.i("savegame", "log8");
+
+                for (Cell[] array : MineFieldToStore) {
+                    list.addAll(Arrays.asList(array));
+                }
+                Log.i("savegame", "log9");
+
+                ref.child("MineField").setValue(list);
+                Log.i("savegame", "log10");
+
+                dialog.dismiss();
+
+            }
+
+        });
+        Dialogue.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        Dialogue.show();
+    }
     /**
      * Builds a grid of buttons with a given row and column count into the minefield TableLayout instance
      * @param rowCount The amount of rows to build
@@ -122,7 +232,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 final Button b = new Button(this); // new button
                 buttonArr[i][j] = b;
                 b.setText(m.GetCells()[i][j].getDisplay()); // set text
-                b.setBackgroundTintList(getResources().getColorStateList(R.color.cellColorNormal)); // set its color
+                switch(m.GetCells()[i][j].getDisplay()){// set its color
+                    case "F":
+                        b.setBackgroundTintList(getResources().getColorStateList(R.color.flagColor));
+                        break;
+                    case "_":
+                        b.setBackgroundTintList(getResources().getColorStateList(R.color.cellColorNormal));
+                        break;
+                    case "B":
+                        b.setBackgroundTintList(getResources().getColorStateList(R.color.bombColor));
+                        break;
+                    default:
+                        b.setBackgroundTintList(getResources().getColorStateList(R.color.cellColorClicked));
+                        break;
+                }
+
                 final int row = i;
                 final int col = j;
                 b.setOnClickListener(new View.OnClickListener() { // now for an on click
@@ -215,52 +339,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    public void SaveGame(View view){
-        Log.i("savegame", "log1");
-        final AlertDialog.Builder Dialogue = new AlertDialog.Builder(MainActivity.this);
-        Log.i("savegame", "log2");
-
-        Dialogue.setTitle("Save Game");
-        Log.i("savegame", "log3");
-
-        Dialogue.setMessage("Save Game?");
-        Log.i("savegame", "log4");
-
-        Dialogue.setPositiveButton("yes", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Log.i("savegame", "log5");
-
-                Firebase ref = new Firebase("https://androidminesweeper.firebaseio.com/");
-                Log.i("savegame", "log6");
-
-                Cell[][] MineFieldToStore = minefield.GetCells();
-                Log.i("savegame", "log7");
-
-                List<Cell> list = new ArrayList<>();
-                Log.i("savegame", "log8");
-
-                for (Cell[] array : MineFieldToStore) {
-                    list.addAll(Arrays.asList(array));
-                }
-                Log.i("savegame", "log9");
-
-                ref.child("MineField").setValue(list);
-                Log.i("savegame", "log10");
-
-                dialog.dismiss();
-
-            }
-
-        });
-        Dialogue.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-        Dialogue.show();
-    }
 
     public void SetFieldEnabled(boolean enabled){
         TableLayout tl = findViewById(R.id.MinefieldTableLayout);
