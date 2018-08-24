@@ -3,6 +3,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <Space
+        android:layout_width="37dp"
+        android:layout_height="479dp"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/DifficultyTitleTextview" />
+
+    <Space
+        android:layout_width="37dp"
+        android:layout_height="479dp"
+        android:layout_alignParentTop="true"
+        android:layout_toStartOf="@+id/DifficultyTitleTextview" />
+
+    <Space
+        android:layout_width="199dp"
+        android:layout_height="110dp"
+        android:layout_alignStart="@+id/CancelButton"
+        android:layout_below="@+id/CancelButton"
+        android:layout_marginStart="-56dp"
+        android:layout_marginTop="-199dp" />
+
     <TextView
         android:id="@+id/DifficultyTitleTextview"
         android:layout_width="wrap_content"
@@ -47,6 +67,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="152dp"
+        android:layout_marginBottom="198dp"
         android:text="@string/cancel_button_text" />
 </RelativeLayout>
