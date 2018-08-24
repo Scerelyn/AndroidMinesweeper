@@ -1,8 +1,11 @@
 package neumont.minesweeper;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -11,6 +14,10 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.firebase.client.Firebase;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     boolean isFlagMode = false;
@@ -203,6 +210,53 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         else if(b.getText().toString().equals("_")){
             b.setBackgroundTintList(getResources().getColorStateList(R.color.cellColorNormal)); // change color
         }
+    }
+
+    public void SaveGame(View view){
+        Log.i("savegame", "log1");
+        final AlertDialog.Builder Dialogue = new AlertDialog.Builder(MainActivity.this);
+        Log.i("savegame", "log2");
+
+        Dialogue.setTitle("Save Game");
+        Log.i("savegame", "log3");
+
+        Dialogue.setMessage("Save Game?");
+        Log.i("savegame", "log4");
+
+        Dialogue.setPositiveButton("yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Log.i("savegame", "log5");
+
+                Firebase ref = new Firebase("https://androidminesweeper.firebaseio.com/");
+                Log.i("savegame", "log6");
+
+                Cell[][] MineFieldToStore = minefield.GetCells();
+                Log.i("savegame", "log7");
+
+                List<Cell> list = new ArrayList<>();
+                Log.i("savegame", "log8");
+
+                for (Cell[] array : MineFieldToStore) {
+                    list.addAll(Arrays.asList(array));
+                }
+                Log.i("savegame", "log9");
+
+                ref.child("MineField").setValue(list);
+                Log.i("savegame", "log10");
+
+                dialog.dismiss();
+
+            }
+
+        });
+        Dialogue.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        Dialogue.show();
     }
 
     public void SetFieldEnabled(boolean enabled){
