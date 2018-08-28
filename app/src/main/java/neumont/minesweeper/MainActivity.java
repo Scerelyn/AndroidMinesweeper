@@ -153,9 +153,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 newMineField.GetCells()[i][j] = c;
                             }
                         }
-                        Log.i("firebasedebug","5");
                         buildButtonGrid(length, width, newMineField);
-                        Log.i("firebasedebug","6");
                     }
 
                     @Override
@@ -172,37 +170,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void SaveGame(View view){
-        Log.i("savegame", "log1");
         final AlertDialog.Builder Dialogue = new AlertDialog.Builder(MainActivity.this);
-        Log.i("savegame", "log2");
 
         Dialogue.setTitle("Save Game");
-        Log.i("savegame", "log3");
 
         Dialogue.setMessage("Save Game?");
-        Log.i("savegame", "log4");
 
         Dialogue.setPositiveButton("yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Log.i("savegame", "log5");
 
                 Firebase ref = new Firebase("https://androidminesweeper.firebaseio.com/");
-                Log.i("savegame", "log6");
 
                 Cell[][] MineFieldToStore = minefield.GetCells();
-                Log.i("savegame", "log7");
 
                 List<Cell> list = new ArrayList<>();
-                Log.i("savegame", "log8");
 
                 for (Cell[] array : MineFieldToStore) {
                     list.addAll(Arrays.asList(array));
                 }
-                Log.i("savegame", "log9");
 
                 ref.child("MineField").setValue(list);
-                Log.i("savegame", "log10");
 
                 dialog.dismiss();
 
