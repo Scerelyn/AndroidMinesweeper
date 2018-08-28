@@ -27,7 +27,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     boolean isFlagMode = false;
     Button easyButton, mediumButton, hardButton, cancelButton;
-    Dialog newGameDialog, gameOverDialog;
+    Dialog newGameDialog, gameOverDialog, loadGameDialog;
     Minefield minefield;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +38,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         newGameDialog.setContentView(R.layout.new_game_dialog);
         gameOverDialog = new Dialog(this);
         gameOverDialog.setContentView(R.layout.game_over_dialog);
+        loadGameDialog = new Dialog(this);
+        loadGameDialog.setContentView(R.layout.load_game_layout);
 
         Button ngButton = findViewById(R.id.NewGameButton);
         ngButton.setOnClickListener(new View.OnClickListener() {
@@ -107,6 +109,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 gameOverDialog.dismiss();
                 break;
             case R.id.LoadGameButton:
+                loadGameDialog.show();
+                newGameDialog.dismiss();
+                break;
+            case R.id.LoadGameLoadButton:
+                String loadName = ((TextView)loadGameDialog.findViewById(R.id.LoadGameSaveName)).getText().toString();
+                //do something with the load name
+                loadGameDialog.show();
                 TableLayout ty4 = findViewById(R.id.MinefieldTableLayout);
                 ty4.removeAllViews();
                 Log.i("firebasedebug","1");
@@ -118,7 +127,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         Log.i("firebasedebug","2");
                         ArrayList<DataSnapshot> array = new ArrayList<>();
                         for (DataSnapshot cell: dataSnapshot.getChildren()
-                             ) {
+                                ) {
                             array.add(cell);
                         }
                         int length= 0;
@@ -167,9 +176,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 });
 
-
-                //Read data from FireBase
-                newGameDialog.dismiss();
+                loadGameDialog.dismiss();
+                break;
+            case R.id.LoadGameCancelButton:
+                loadGameDialog.dismiss();
                 break;
         }
     }
