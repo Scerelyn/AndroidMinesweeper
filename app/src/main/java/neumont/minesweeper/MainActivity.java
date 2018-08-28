@@ -80,12 +80,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Minefield m = new Minefield(10, 10, 12);
                 buildButtonGrid(10,10, m);
                 newGameDialog.dismiss();
+                SetFieldEnabled(true);
                 break;
             case R.id.MediumDifficultyButton:
                 TableLayout ty2 = findViewById(R.id.MinefieldTableLayout);
                 ty2.removeAllViews();
                 Minefield m2 = new Minefield(20, 20, 60);
                 buildButtonGrid(20,20, m2);
+                SetFieldEnabled(true);
                 newGameDialog.dismiss();
                 break;
             case R.id.HardDifficultyButton:
@@ -93,6 +95,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 ty3.removeAllViews();
                 Minefield m3 = new Minefield(30, 30, 120);
                 buildButtonGrid(30,30, m3);
+                SetFieldEnabled(true);
                 newGameDialog.dismiss();
                 break;
             case R.id.CancelButton:
@@ -351,7 +354,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 b.setEnabled(enabled);
             }
         }
-
+        findViewById(R.id.save_button).setEnabled(enabled);
     }
 
     public void FirebaseRefExample(){
