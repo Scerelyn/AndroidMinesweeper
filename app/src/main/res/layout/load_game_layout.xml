@@ -22,7 +22,7 @@
     <Space
         android:id="@+id/LoadGameSpacerMiddle"
         android:layout_width="240dp"
-        android:layout_height="399dp"
+        android:layout_height="344dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
 
@@ -51,16 +51,15 @@
         android:id="@+id/LoadGameLoadButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="119dp"
-        android:layout_toStartOf="@+id/LoadGameSpacerRight"
+        android:layout_above="@+id/LoadGameCancelButton"
+        android:layout_centerHorizontal="true"
         android:text="@string/load_game_load_text" />
 
     <Button
         android:id="@+id/LoadGameCancelButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/LoadGameSpacerMiddle"
-        android:layout_alignTop="@+id/LoadGameLoadButton"
+        android:layout_above="@+id/LoadGameSpacerMiddle"
+        android:layout_centerHorizontal="true"
         android:text="@string/cancel_button_text" />
 </RelativeLayout>

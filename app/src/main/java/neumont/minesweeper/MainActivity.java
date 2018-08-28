@@ -72,6 +72,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         gameOverDialog.findViewById(R.id.GameOverYesButton).setOnClickListener(this);
         gameOverDialog.findViewById(R.id.GameOverNoButton).setOnClickListener(this);
+        loadGameDialog.findViewById(R.id.LoadGameLoadButton).setOnClickListener(this);
+        loadGameDialog.findViewById(R.id.LoadGameCancelButton).setOnClickListener(this);
 
     }
 
@@ -116,14 +118,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.LoadGameLoadButton:
                 String loadName = ((TextView)loadGameDialog.findViewById(R.id.LoadGameSaveName)).getText().toString();
-                //do something with the load name
+
                 loadGameDialog.show();
                 TableLayout ty4 = findViewById(R.id.MinefieldTableLayout);
                 ty4.removeAllViews();
                 Log.i("firebasedebug","1");
                 Firebase myFirebaseRef = new Firebase("https://androidminesweeper.firebaseio.com/");
 
-                myFirebaseRef.child("MineField").addListenerForSingleValueEvent(new ValueEventListener() {
+                myFirebaseRef.child(loadName).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         Log.i("firebasedebug","2");
