@@ -19,4 +19,6 @@
     <string name="game_over_no_button">No</string>
     <string name="flag_mode_switch_text">Flag Mode</string>
     <string name="load_game_button_text">Load Game</string>
+    <string name="load_game_text_title">Load a game</string>
+    <string name="load_game_load_text">Load</string>
 </resources>
