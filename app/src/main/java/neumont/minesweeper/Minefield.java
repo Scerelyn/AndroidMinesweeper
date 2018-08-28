@@ -108,7 +108,7 @@ public class Minefield {
             if(end)
             {
                 return end;
-            }
+        }
         }
         return false;
 

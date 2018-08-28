@@ -7,15 +7,18 @@
     tools:context=".MainActivity">
 
     <ScrollView
+        android:id="@+id/OuterScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="10dp"
         android:layout_marginEnd="10dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="80dp">
+
         <HorizontalScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <TableLayout
                 android:id="@+id/MinefieldTableLayout"
                 android:layout_width="match_parent"
@@ -31,10 +34,8 @@
         android:id="@+id/ScorePrefixTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="21dp"
+        android:layout_alignBaseline="@+id/save_button"
+        android:layout_alignStart="@+id/BombPrefixTextView"
         android:text="@string/score_prefix_textview" />
 
     <TextView
@@ -49,11 +50,9 @@
         android:id="@+id/BombPrefixTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="44dp"
-        android:text="Bombs Remaining:"/>
+        android:layout_alignStart="@+id/OuterScrollView"
+        android:layout_alignTop="@+id/NewGameButton"
+        android:text="Bombs Remaining:" />
     <TextView
         android:id="@+id/BombCountTextView"
         android:layout_width="wrap_content"
@@ -65,34 +64,27 @@
     <Button
         android:id="@+id/NewGameButton"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
+        android:layout_height="40dp"
+        android:layout_above="@+id/OuterScrollView"
+        android:layout_alignEnd="@+id/OuterScrollView"
+        android:layout_marginBottom="-80dp"
         android:text="@string/new_game_button_text" />
 
+    <Switch
+        android:id="@+id/FlagModeSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/BombPrefixTextView"
+        android:layout_centerHorizontal="true"
+        android:text="@string/flag_mode_switch_text" />
+
     <Button
-        android:id="@+id/FlagModeButton"
+        android:id="@+id/save_button"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
+        android:layout_height="40dp"
+        android:layout_alignEnd="@+id/OuterScrollView"
         android:layout_alignParentTop="true"
-        android:layout_marginEnd="23dp"
-        android:text="@string/flag_button_text" />
-
-    <TextView
-        android:id="@+id/FlagModeStatusTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/FlagModeButton"
-        android:layout_below="@+id/NewGameButton"
-        android:text="@string/flag_mode_off_label" />
-
-    <TextView
-        android:id="@+id/FlagModeFixedTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/FlagModeButton"
-        android:layout_below="@+id/NewGameButton"
-        android:text="@string/flag_mode_fixed_label" />
+        android:onClick="SaveGame"
+        android:text="SaveGame" />
 
 </RelativeLayout>
