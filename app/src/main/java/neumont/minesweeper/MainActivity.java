@@ -104,6 +104,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 gameOverDialog.dismiss();
                 break;
             case R.id.LoadGameButton:
+                TableLayout ty4 = findViewById(R.id.MinefieldTableLayout);
+                ty4.removeAllViews();
                 Log.i("firebasedebug","1");
                 Firebase myFirebaseRef = new Firebase("https://androidminesweeper.firebaseio.com/");
 
