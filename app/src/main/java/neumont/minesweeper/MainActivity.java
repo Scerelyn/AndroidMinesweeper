@@ -176,6 +176,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         b.setText(m.GetCells()[row][col].getDisplay());  // change text
         if(m.GetCells()[row][col].getDisplay().equals("B")){
             b.setBackgroundTintList(getResources().getColorStateList(R.color.bombColor));
+            b.setText("💣");
         }
         else {
             b.setBackgroundTintList(getResources().getColorStateList(R.color.cellColorClicked)); // change color
@@ -198,6 +199,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         b.setText(m.GetCells()[row][col].getDisplay());  // change text
         if(b.getText().toString().equals("F")){
             b.setBackgroundTintList(getResources().getColorStateList(R.color.flagColor)); // change color
+            b.setText("🚩");
         }
         else if(b.getText().toString().equals("_")){
             b.setBackgroundTintList(getResources().getColorStateList(R.color.cellColorNormal)); // change color
