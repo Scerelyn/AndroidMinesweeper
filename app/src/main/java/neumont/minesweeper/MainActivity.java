@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         gameOverDialog.findViewById(R.id.GameOverNoButton).setOnClickListener(this);
         loadGameDialog.findViewById(R.id.LoadGameLoadButton).setOnClickListener(this);
         loadGameDialog.findViewById(R.id.LoadGameCancelButton).setOnClickListener(this);
-
+        findViewById(R.id.save_button).setEnabled(false);
     }
 
     @Override
@@ -160,6 +160,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             default:
                                 Log.i("loggy","loadfailed");
                                 Toast.makeText(cont, "Load failed: No save found",Toast.LENGTH_LONG).show();
+                                cont.findViewById(R.id.save_button).setEnabled(false);
                                 return;
                         }
 
