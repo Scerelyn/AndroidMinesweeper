@@ -5,11 +5,13 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -27,7 +29,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     boolean isFlagMode = false;
     Button easyButton, mediumButton, hardButton, cancelButton;
-    Dialog newGameDialog, gameOverDialog;
+    Dialog newGameDialog, gameOverDialog, loadGameDialog;
     Minefield minefield;
     private int BombsRemaining = 0;
 
@@ -40,6 +42,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         newGameDialog.setContentView(R.layout.new_game_dialog);
         gameOverDialog = new Dialog(this);
         gameOverDialog.setContentView(R.layout.game_over_dialog);
+        loadGameDialog = new Dialog(this);
+        loadGameDialog.setContentView(R.layout.load_game_layout);
 
         Button ngButton = findViewById(R.id.NewGameButton);
         ngButton.setOnClickListener(new View.OnClickListener() {
@@ -70,6 +74,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         gameOverDialog.findViewById(R.id.GameOverYesButton).setOnClickListener(this);
         gameOverDialog.findViewById(R.id.GameOverNoButton).setOnClickListener(this);
+        loadGameDialog.findViewById(R.id.LoadGameLoadButton).setOnClickListener(this);
+        loadGameDialog.findViewById(R.id.LoadGameCancelButton).setOnClickListener(this);
 
     }
 
@@ -83,6 +89,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 BombsRemaining = 12;
                 buildButtonGrid(10,10, m);
                 newGameDialog.dismiss();
+                SetFieldEnabled(true);
                 break;
             case R.id.MediumDifficultyButton:
                 TableLayout ty2 = findViewById(R.id.MinefieldTableLayout);
@@ -90,6 +97,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Minefield m2 = new Minefield(20, 20, 60);
                 BombsRemaining = 60;
                 buildButtonGrid(20,20, m2);
+                SetFieldEnabled(true);
                 newGameDialog.dismiss();
                 break;
             case R.id.HardDifficultyButton:
@@ -98,6 +106,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Minefield m3 = new Minefield(30, 30, 120);
                 BombsRemaining = 120;
                 buildButtonGrid(30,30, m3);
+                SetFieldEnabled(true);
                 newGameDialog.dismiss();
                 break;
             case R.id.CancelButton:
@@ -109,18 +118,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 gameOverDialog.dismiss();
                 break;
             case R.id.LoadGameButton:
+                loadGameDialog.show();
+                newGameDialog.dismiss();
+                break;
+            case R.id.LoadGameLoadButton:
+                String loadName = ((TextView)loadGameDialog.findViewById(R.id.LoadGameSaveName)).getText().toString();
+
+                loadGameDialog.show();
                 TableLayout ty4 = findViewById(R.id.MinefieldTableLayout);
                 ty4.removeAllViews();
                 Log.i("firebasedebug","1");
                 Firebase myFirebaseRef = new Firebase("https://androidminesweeper.firebaseio.com/");
 
-                myFirebaseRef.child("MineField").addListenerForSingleValueEvent(new ValueEventListener() {
+                myFirebaseRef.child(loadName).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         Log.i("firebasedebug","2");
                         ArrayList<DataSnapshot> array = new ArrayList<>();
                         for (DataSnapshot cell: dataSnapshot.getChildren()
-                             ) {
+                                ) {
                             array.add(cell);
                         }
                         int length= 0;
@@ -148,19 +164,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         for(int i = 0; i < length; i++){
                             for(int j = 0;j < width;j++){
                                 Cell c = newMineField.GetCells()[i][j];
+                                c.setBomb((boolean)array.get(j+i * width).child("bomb").getValue());
+                                c.setNumBombs((int)((long)array.get(j+i * width).child("numBombs").getValue()+0.0));
                                 if(!array.get(j+i * width).child("display").getValue().equals("_")){
                                     c.Flip(false);
                                 }
-                                c.setBomb((boolean)array.get(j+i * width).child("bomb").getValue());
-                                c.setNumBombs((int)((long)array.get(j+i * width).child("numBombs").getValue()+0.0));
                                 c.y = i;
                                 c.x = j;
                                 newMineField.GetCells()[i][j] = c;
                             }
                         }
-                        Log.i("firebasedebug","5");
                         buildButtonGrid(length, width, newMineField);
-                        Log.i("firebasedebug","6");
                     }
 
                     @Override
@@ -169,45 +183,39 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 });
 
-
-                //Read data from FireBase
-                newGameDialog.dismiss();
+                loadGameDialog.dismiss();
+                break;
+            case R.id.LoadGameCancelButton:
+                loadGameDialog.dismiss();
                 break;
         }
     }
 
     public void SaveGame(View view){
-        Log.i("savegame", "log1");
         final AlertDialog.Builder Dialogue = new AlertDialog.Builder(MainActivity.this);
-        Log.i("savegame", "log2");
 
         Dialogue.setTitle("Save Game");
-        Log.i("savegame", "log3");
 
         Dialogue.setMessage("Save Game?");
-        Log.i("savegame", "log4");
+
+        final EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_NORMAL);
+        Dialogue.setView(input);
 
         Dialogue.setPositiveButton("yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Log.i("savegame", "log5");
 
                 Firebase ref = new Firebase("https://androidminesweeper.firebaseio.com/");
-                Log.i("savegame", "log6");
 
                 Cell[][] MineFieldToStore = minefield.GetCells();
-                Log.i("savegame", "log7");
 
                 List<Cell> list = new ArrayList<>();
-                Log.i("savegame", "log8");
 
                 for (Cell[] array : MineFieldToStore) {
                     list.addAll(Arrays.asList(array));
                 }
-                Log.i("savegame", "log9");
-
-                ref.child("MineField").setValue(list);
-                Log.i("savegame", "log10");
+                ref.child(input.getText().toString()).setValue(list);
 
                 dialog.dismiss();
 
@@ -360,7 +368,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 b.setEnabled(enabled);
             }
         }
-
+        findViewById(R.id.save_button).setEnabled(enabled);
     }
 
     public void FirebaseRefExample(){

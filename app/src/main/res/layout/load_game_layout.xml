@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <Space
+        android:id="@+id/LoadGameSpacerLeft"
+        android:layout_width="72dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true" />
+
+    <Space
+        android:id="@+id/LoadGameSpacerRight"
+        android:layout_width="72dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true" />
+
+    <Space
+        android:id="@+id/LoadGameSpacerMiddle"
+        android:layout_width="240dp"
+        android:layout_height="344dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:id="@+id/LoadGameSaveName"
+        android:layout_width="239dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="63dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Name of Save" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="23dp"
+        android:text="@string/load_game_text_title"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/LoadGameLoadButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/LoadGameCancelButton"
+        android:layout_centerHorizontal="true"
+        android:text="@string/load_game_load_text" />
+
+    <Button
+        android:id="@+id/LoadGameCancelButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/LoadGameSpacerMiddle"
+        android:layout_centerHorizontal="true"
+        android:text="@string/cancel_button_text" />
+</RelativeLayout>
