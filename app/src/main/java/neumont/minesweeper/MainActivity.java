@@ -16,6 +16,7 @@ import android.widget.Switch;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -129,14 +130,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 ty4.removeAllViews();
                 Log.i("firebasedebug","1");
                 Firebase myFirebaseRef = new Firebase("https://androidminesweeper.firebaseio.com/");
-
+                final MainActivity cont = this;
                 myFirebaseRef.child(loadName).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         Log.i("firebasedebug","2");
                         ArrayList<DataSnapshot> array = new ArrayList<>();
-                        for (DataSnapshot cell: dataSnapshot.getChildren()
-                                ) {
+                        for (DataSnapshot cell: dataSnapshot.getChildren()) {
                             array.add(cell);
                         }
                         int length= 0;
@@ -157,6 +157,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 length = 30;
                                 width = 30;
                                 break;
+                            default:
+                                Log.i("loggy","loadfailed");
+                                Toast.makeText(cont, "Load failed: No save found",Toast.LENGTH_LONG).show();
+                                return;
                         }
 
                         Minefield newMineField = new Minefield(width,length,0);
