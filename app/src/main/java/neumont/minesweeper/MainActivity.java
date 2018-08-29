@@ -326,7 +326,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void TidalButtonFlip(int row, int col, Button[][] buttonArr, Minefield m){
         Button b = buttonArr[row][col];
-        if(!b.getText().equals("F")){
+        if(!b.getText().toString().equals("F") && !b.getText().toString().equals("🚩")){
             FlipButton(b, m, row, col);
             if(m.GetCells()[row][col].getNumBombs() == 0){
                 for(int rowOffset = -1; rowOffset < 2; rowOffset++){
