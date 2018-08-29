@@ -29,6 +29,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Button easyButton, mediumButton, hardButton, cancelButton;
     Dialog newGameDialog, gameOverDialog;
     Minefield minefield;
+    private int BombsRemaining = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Firebase.setAndroidContext(this);
@@ -78,6 +80,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 TableLayout ty = findViewById(R.id.MinefieldTableLayout);
                 ty.removeAllViews();
                 Minefield m = new Minefield(10, 10, 12);
+                BombsRemaining = 12;
                 buildButtonGrid(10,10, m);
                 newGameDialog.dismiss();
                 break;
@@ -85,6 +88,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 TableLayout ty2 = findViewById(R.id.MinefieldTableLayout);
                 ty2.removeAllViews();
                 Minefield m2 = new Minefield(20, 20, 60);
+                BombsRemaining = 60;
                 buildButtonGrid(20,20, m2);
                 newGameDialog.dismiss();
                 break;
@@ -92,6 +96,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 TableLayout ty3 = findViewById(R.id.MinefieldTableLayout);
                 ty3.removeAllViews();
                 Minefield m3 = new Minefield(30, 30, 120);
+                BombsRemaining = 120;
                 buildButtonGrid(30,30, m3);
                 newGameDialog.dismiss();
                 break;
@@ -337,9 +342,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if(b.getText().toString().equals("F")){
             b.setBackgroundTintList(getResources().getColorStateList(R.color.flagColor)); // change color
             b.setText("🚩");
+            BombsRemaining--;
         }
         else if(b.getText().toString().equals("_")){
             b.setBackgroundTintList(getResources().getColorStateList(R.color.cellColorNormal)); // change color
+            BombsRemaining++;
         }
     }
 
