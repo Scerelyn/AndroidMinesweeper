@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
+
         final Switch flagSwitch = findViewById(R.id.FlagModeSwitch);
         flagSwitch.setOnCheckedChangeListener(new Switch.OnCheckedChangeListener() {
             @Override
@@ -79,6 +80,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    private void AdjustBombs(int i)
+    {
+        BombsRemaining = i;
+        TextView bombLabel = findViewById(R.id.BombCountTextView);
+        String s = "";
+        s += BombsRemaining;
+        bombLabel.setText(s);
+    }
+
     @Override
     public void onClick(View view){
         switch(view.getId()){
@@ -86,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 TableLayout ty = findViewById(R.id.MinefieldTableLayout);
                 ty.removeAllViews();
                 Minefield m = new Minefield(10, 10, 12);
-                BombsRemaining = 12;
+                AdjustBombs(BombsRemaining = 12);
                 buildButtonGrid(10,10, m);
                 newGameDialog.dismiss();
                 SetFieldEnabled(true);
@@ -95,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 TableLayout ty2 = findViewById(R.id.MinefieldTableLayout);
                 ty2.removeAllViews();
                 Minefield m2 = new Minefield(20, 20, 60);
-                BombsRemaining = 60;
+                AdjustBombs(BombsRemaining = 60);
                 buildButtonGrid(20,20, m2);
                 SetFieldEnabled(true);
                 newGameDialog.dismiss();
@@ -104,7 +114,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 TableLayout ty3 = findViewById(R.id.MinefieldTableLayout);
                 ty3.removeAllViews();
                 Minefield m3 = new Minefield(30, 30, 120);
-                BombsRemaining = 120;
+                AdjustBombs(BombsRemaining = 120);
                 buildButtonGrid(30,30, m3);
                 SetFieldEnabled(true);
                 newGameDialog.dismiss();
@@ -350,11 +360,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if(b.getText().toString().equals("F")){
             b.setBackgroundTintList(getResources().getColorStateList(R.color.flagColor)); // change color
             b.setText("🚩");
-            BombsRemaining--;
+            AdjustBombs(BombsRemaining-1);
         }
         else if(b.getText().toString().equals("_")){
             b.setBackgroundTintList(getResources().getColorStateList(R.color.cellColorNormal)); // change color
-            BombsRemaining++;
+            AdjustBombs(BombsRemaining+1);
         }
     }
 
