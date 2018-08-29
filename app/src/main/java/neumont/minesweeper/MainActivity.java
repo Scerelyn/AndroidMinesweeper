@@ -166,8 +166,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 Cell c = newMineField.GetCells()[i][j];
                                 c.setBomb((boolean)array.get(j+i * width).child("bomb").getValue());
                                 c.setNumBombs((int)((long)array.get(j+i * width).child("numBombs").getValue()+0.0));
-                                if(!array.get(j+i * width).child("display").getValue().equals("_")){
+                                if(!array.get(j+i * width).child("display").getValue().equals("_") && !array.get(j+i*width).child("display").getValue().equals("F")){
                                     c.Flip(false);
+                                }
+                                if(array.get(j+i*width).child("display").getValue().equals("F")){
+                                    c.Flag();
                                 }
                                 c.y = i;
                                 c.x = j;
