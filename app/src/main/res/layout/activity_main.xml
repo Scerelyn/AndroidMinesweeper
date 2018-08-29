@@ -31,27 +31,11 @@
     </ScrollView>
 
     <TextView
-        android:id="@+id/ScorePrefixTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/save_button"
-        android:layout_alignStart="@+id/BombPrefixTextView"
-        android:text="@string/score_prefix_textview" />
-
-    <TextView
-        android:id="@+id/ScoreTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/ScorePrefixTextView"
-        android:layout_toEndOf="@+id/ScorePrefixTextView"
-        android:text="00000" />
-
-    <TextView
         android:id="@+id/BombPrefixTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/save_button"
         android:layout_alignStart="@+id/OuterScrollView"
-        android:layout_alignTop="@+id/NewGameButton"
         android:text="Bombs Remaining:" />
     <TextView
         android:id="@+id/BombCountTextView"
@@ -74,8 +58,8 @@
         android:id="@+id/FlagModeSwitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/BombPrefixTextView"
-        android:layout_centerHorizontal="true"
+        android:layout_alignStart="@+id/OuterScrollView"
+        android:layout_alignTop="@+id/NewGameButton"
         android:text="@string/flag_mode_switch_text" />
 
     <Button

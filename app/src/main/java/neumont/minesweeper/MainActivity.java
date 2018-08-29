@@ -176,22 +176,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                         Minefield newMineField = new Minefield(width,length,0);
                         Log.i("firebasedebug","4");
+                        int bombs = 0;
                         for(int i = 0; i < length; i++){
                             for(int j = 0;j < width;j++){
                                 Cell c = newMineField.GetCells()[i][j];
                                 c.setBomb((boolean)array.get(j+i * width).child("bomb").getValue());
+                                if(c.getBomb()){
+                                    bombs++;
+                                }
                                 c.setNumBombs((int)((long)array.get(j+i * width).child("numBombs").getValue()+0.0));
                                 if(!array.get(j+i * width).child("display").getValue().equals("_") && !array.get(j+i*width).child("display").getValue().equals("F")){
                                     c.Flip(false);
                                 }
                                 if(array.get(j+i*width).child("display").getValue().equals("F")){
                                     c.Flag();
+                                    bombs--;
                                 }
                                 c.y = i;
                                 c.x = j;
                                 newMineField.GetCells()[i][j] = c;
                             }
                         }
+                        AdjustBombs(bombs);
                         buildButtonGrid(length, width, newMineField);
                     }
 
